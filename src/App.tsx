@@ -1,24 +1,57 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import './App.css';
+import { selectScoreboard } from './redux/gameSlice';
 
 function App() {
+  const [playing, setPlaying] = useState(false);
+
+  const scoreboard = useSelector(selectScoreboard())
+
+  const startGame = () => {
+    setPlaying(true)
+  }
+
+  const finishGame = () => {
+    setPlaying(false)
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className='Ranking'>
+        <h1>Scoreboard</h1>
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>Score</th>
+          </tr>
+          {scoreboard.map(score => (
+            <tr>
+              <td>{score.playerName}</td>
+              <td>{score.score}</td>
+            </tr>
+          ))}
+        </table>
+
+
+      </div>
+      <div>
+        {!playing ? (
+          <>
+            <h1>Whack a Mole Game</h1>
+            <button onClick={startGame}>Start</button>
+          </>
+        ) : (
+          <>
+            <div>
+              <h1>Score</h1>
+              <button onClick={finishGame}>Start</button>
+            </div>
+          </>
+        )}
+      </div>
+
+
     </div>
   );
 }
