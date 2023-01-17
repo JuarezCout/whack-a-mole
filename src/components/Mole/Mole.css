@@ -25,10 +25,20 @@
     width: 100px;
     height: 100px;
     z-index: 2;
+    margin: 20px;
 }
 
 .Mole_hole.up .Mole {
     background: url(../../assets/WAM_Mole.png) top no-repeat;
+    background-size: 100px;
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    transition: all 0.5s ease;
+}
+
+.Mole_hole.hit .Hammer {
+    background: url(../../assets/WAM_Hammer.png) top no-repeat;
     background-size: 100px;
     position: absolute;
     width: 100px;

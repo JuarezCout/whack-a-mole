@@ -8,7 +8,7 @@ const Scoreboard = () => {
 
     return (
         <div className='Ranking'>
-            <h1>Scoreboard</h1>
+            <h2>Scoreboard</h2>
             <table>
                 <thead>
                     <tr>

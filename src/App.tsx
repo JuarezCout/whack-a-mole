@@ -15,6 +15,7 @@ function App() {
   const [finished, setFinished] = useState(false);
   const [name, setName] = useState("");
   const [score, setScore] = useState(0);
+  const [errorMsg, setErrorMsg] = useState("");
   let holes = document.querySelectorAll('.Mole_hole')
   let lastHole = 0;
 
@@ -25,16 +26,21 @@ function App() {
   }, [finished])
 
   const startGame = () => {
-    setScore(0)
-    setPlaying(true)
-    setFinished(false)
-    setTimeout(() => {
-      holes = document.querySelectorAll('.Mole_hole')
-      showRandomMole()
-    }, 250);
-    setTimeout(() => {
-      finishGame()
-    }, 30000);
+    if (name.length === 3) {
+      setErrorMsg("")
+      setScore(0)
+      setPlaying(true)
+      setFinished(false)
+      setTimeout(() => {
+        holes = document.querySelectorAll('.Mole_hole')
+        showRandomMole()
+      }, 500);
+      setTimeout(() => {
+        finishGame()
+      }, 30000);
+    } else {
+      setErrorMsg("Player name should have 3 letters")
+    }
   }
 
   const finishGame = () => {
@@ -48,8 +54,15 @@ function App() {
     setScore(0)
   }
 
-  const hitMole = () => {
+  const hitMole = (hole: number) => {
+    holes = document.querySelectorAll('.Mole_hole')
+    holes[hole - 1].classList.add('hit')
     setScore(score + 50)
+    holes[hole - 1].classList.remove('up')
+
+    setTimeout(() => {
+      holes[hole - 1].classList.remove('hit')
+    }, 300);
   }
 
   const randomTime = (min: number, max: number) => {
@@ -88,12 +101,11 @@ function App() {
       <Scoreboard />
       <div>
         {!playing ? (
-          <>
+          <div className='Home'>
             <h1>Whack a Mole Game</h1>
             <input onChange={handleNameChange} type="text" value={name} />
-
             <button onClick={startGame}>Start</button>
-          </>
+          </div>
         ) : (
           <div className='Game'>
             <button onClick={cancelGame}>Cancel</button>
@@ -103,7 +115,7 @@ function App() {
           </div>
         )}
       </div>
-
+      {errorMsg.length > 0 && <span>{errorMsg}</span>}
 
     </div>
   );
