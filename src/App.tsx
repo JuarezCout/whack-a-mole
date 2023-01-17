@@ -23,17 +23,18 @@ function App() {
       showRandomMole()
     }, 250);
     setTimeout(() => {
-      dispatch(updateScoreboard({playerName: "TES", score: score}))
-      setPlaying(false)
+      finishGame()
     }, 30000);
   }
 
-  const finishGame = () => {
+  const finishGame = () => {    
+    dispatch(updateScoreboard({playerName: "123", score: score}))
     setPlaying(false)
   }
 
-  const hitMole = (hole: number) => {
-    setScore(score + 10)
+  const hitMole = () => {
+    console.log(score)
+    setScore(score + 50)
   }
 
   const randomTime = (min: number, max: number) => {

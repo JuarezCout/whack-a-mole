@@ -38,6 +38,7 @@ export const gameSlice = createSlice({
     initialState,
     reducers: {
         updateScoreboard: (state, action: PayloadAction<Score>) => {
+            console.log(action.payload)
             state.scoreboard.push(action.payload)
             state.scoreboard.sort(function(a,b){
                 return b.score - a.score
