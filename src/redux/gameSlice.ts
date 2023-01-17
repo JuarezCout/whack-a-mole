@@ -38,7 +38,10 @@ export const gameSlice = createSlice({
     initialState,
     reducers: {
         updateScoreboard: (state, action: PayloadAction<Score>) => {
-
+            state.scoreboard.push(action.payload)
+            state.scoreboard.sort(function(a,b){
+                return b.score - a.score
+            })
         },
     },
     extraReducers: (builder) => {

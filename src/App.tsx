@@ -4,20 +4,26 @@ import Moles from './components/Moles';
 import Score from './components/Score';
 import Scoreboard from './components/Scoreboard';
 import Timer from './components/Timer';
+import { updateScoreboard } from './redux/gameSlice';
+import { useAppDispatch } from './redux/hooks';
 
 function App() {
+  const dispatch = useAppDispatch()
   const [playing, setPlaying] = useState(false);
   const [score, setScore] = useState(0);
-  const [holeActive, setHoleActive] = useState<number>(0);
-  const [holes, setHoles] = useState<number[]>([]);
+  let holes = document.querySelectorAll('.Mole_hole')
 
   let lastHole = 0;
 
   const startGame = () => {
     setScore(0)
     setPlaying(true)
-    showRandomMole()
     setTimeout(() => {
+      holes = document.querySelectorAll('.Mole_hole')
+      showRandomMole()
+    }, 250);
+    setTimeout(() => {
+      dispatch(updateScoreboard({playerName: "TES", score: score}))
       setPlaying(false)
     }, 30000);
   }
@@ -35,30 +41,23 @@ function App() {
   }
 
   const showRandomMole = () => {
-    // console.log(holes)
-    const time = randomTime(500, 1000);
+    const time = randomTime(1000, 1500);
     const hole = randomHole();
 
-    let newHoles = holes;
-    newHoles.push(hole);
-    setHoles(newHoles);
-
+    hole.classList.add('up')
     setTimeout(() => {
-      let newHoles = holes;
-      newHoles.filter(i => i !== hole);
-      setHoles(newHoles);
-      setTimeout(() => {
-        if (!playing) showRandomMole();
-      }, 500);
+      hole.classList.remove('up')
+      if (!playing) showRandomMole();
     }, time);
   }
 
-  const randomHole: () => number = () => {
-    const hole = Math.floor(Math.random() * 12);
-    if (hole === lastHole) {
+  const randomHole: () => Element = () => {
+    const id = Math.floor(Math.random() * 12)
+    const hole = holes[id];
+    if (id === lastHole) {
       return randomHole();
     }
-    lastHole = hole;
+    lastHole = id;
     return hole;
   }
 
@@ -76,7 +75,7 @@ function App() {
             <button onClick={finishGame}>Finish</button>
             <Score score={score} />
             <Timer />
-            <Moles holesActive={holes} onClick={hitMole} />
+            <Moles onClick={hitMole} />
           </div>
         )}
       </div>

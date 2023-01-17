@@ -1,15 +1,41 @@
-.Mole_hole {
+/* .Mole {
     width: 100px;
     height: 100px;
     background-image: url(../../assets/WAM_Hole.png);
     background-size: 100px;
     background-repeat: no-repeat;
-}
+    z-index: 0;
 
-.Mole {
+} */
+
+/* .Mole.up {
+    z-index: 10000;
+} */
+
+/* .Mole_hole {
     width: 100px;
     height: 100px;
-    background-image: url(../../assets/WAM_Mole.png);
+    background-image: url();
     background-size: 100px;
     background-repeat: no-repeat;
+} */
+.Mole_hole {
+    background: url(../../assets/WAM_Hole.png) no-repeat;
+    background-size: 100px;
+    width: 100px;
+    height: 100px;
+    z-index: 2;
+}
+
+.Mole_hole.up .Mole {
+    background: url(../../assets/WAM_Mole.png) top no-repeat;
+    background-size: 100px;
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    transition: all 0.5s ease;
+}
+
+.Mole_hole.up  {
+    background-size: 0px;
 }
