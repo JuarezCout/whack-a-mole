@@ -1,43 +1,70 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 import './App.css';
 import Moles from './components/Moles';
 import Score from './components/Score';
+import Scoreboard from './components/Scoreboard';
 import Timer from './components/Timer';
-import { selectScoreboard } from './redux/gameSlice';
 
 function App() {
   const [playing, setPlaying] = useState(false);
+  const [score, setScore] = useState(0);
+  const [holeActive, setHoleActive] = useState<number>(0);
+  const [holes, setHoles] = useState<number[]>([]);
 
-  const scoreboard = useSelector(selectScoreboard())
+  let lastHole = 0;
 
   const startGame = () => {
+    setScore(0)
     setPlaying(true)
+    showRandomMole()
+    setTimeout(() => {
+      setPlaying(false)
+    }, 30000);
   }
 
   const finishGame = () => {
     setPlaying(false)
   }
 
+  const hitMole = (hole: number) => {
+    setScore(score + 10)
+  }
+
+  const randomTime = (min: number, max: number) => {
+    return Math.round(Math.random() * (max - min) + min);
+  }
+
+  const showRandomMole = () => {
+    // console.log(holes)
+    const time = randomTime(500, 1000);
+    const hole = randomHole();
+
+    let newHoles = holes;
+    newHoles.push(hole);
+    setHoles(newHoles);
+
+    setTimeout(() => {
+      let newHoles = holes;
+      newHoles.filter(i => i !== hole);
+      setHoles(newHoles);
+      setTimeout(() => {
+        if (!playing) showRandomMole();
+      }, 500);
+    }, time);
+  }
+
+  const randomHole: () => number = () => {
+    const hole = Math.floor(Math.random() * 12);
+    if (hole === lastHole) {
+      return randomHole();
+    }
+    lastHole = hole;
+    return hole;
+  }
+
   return (
     <div className="App">
-      <div className='Ranking'>
-        <h1>Scoreboard</h1>
-        <table>
-          <tr>
-            <th>Name</th>
-            <th>Score</th>
-          </tr>
-          {scoreboard.map(score => (
-            <tr>
-              <td>{score.playerName}</td>
-              <td>{score.score}</td>
-            </tr>
-          ))}
-        </table>
-
-
-      </div>
+      <Scoreboard />
       <div>
         {!playing ? (
           <>
@@ -46,9 +73,10 @@ function App() {
           </>
         ) : (
           <div className='Game'>
-            <Score />
+            <button onClick={finishGame}>Finish</button>
+            <Score score={score} />
             <Timer />
-            <Moles />
+            <Moles holesActive={holes} onClick={hitMole} />
           </div>
         )}
       </div>

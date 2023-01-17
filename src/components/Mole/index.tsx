@@ -1,14 +1,12 @@
 import React, { useState } from "react"
 import './Mole.css'
 
-const Mole = () => {
-
-    const [showMole, setShowMole] = useState(false)
+const Mole = ({ hole, holesActive, onClick }: { hole: number, holesActive: number[], onClick: (hole: number) => void }) => {
 
     return (
         <>
-            {showMole ? (
-                <div className="Mole"></div>
+            { holesActive.includes(hole) ? (
+                <div className="Mole" onClick={() => onClick(hole)}></div>
             ) : (
                 <div className="Mole_hole"></div>
             )}
