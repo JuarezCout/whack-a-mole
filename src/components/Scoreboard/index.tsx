@@ -17,7 +17,7 @@ const Scoreboard = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {scoreboard.map((score, index) => (
+                    {scoreboard.slice(0,10).map((score, index) => (
                         <tr key={index}>
                             <td>{score.playerName}</td>
                             <td>{score.score}</td>

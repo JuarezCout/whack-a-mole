@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Moles from './components/Moles';
 import Score from './components/Score';
@@ -8,16 +8,26 @@ import { updateScoreboard } from './redux/gameSlice';
 import { useAppDispatch } from './redux/hooks';
 
 function App() {
+
+
   const dispatch = useAppDispatch()
   const [playing, setPlaying] = useState(false);
+  const [finished, setFinished] = useState(false);
+  const [name, setName] = useState("");
   const [score, setScore] = useState(0);
   let holes = document.querySelectorAll('.Mole_hole')
-
   let lastHole = 0;
+
+  useEffect(() => {
+    if (finished) {
+      dispatch(updateScoreboard({ playerName: name, score: score }))
+    }
+  }, [finished])
 
   const startGame = () => {
     setScore(0)
     setPlaying(true)
+    setFinished(false)
     setTimeout(() => {
       holes = document.querySelectorAll('.Mole_hole')
       showRandomMole()
@@ -27,13 +37,18 @@ function App() {
     }, 30000);
   }
 
-  const finishGame = () => {    
-    dispatch(updateScoreboard({playerName: "123", score: score}))
+  const finishGame = () => {
+    setFinished(true)
     setPlaying(false)
+    setName('')
+  }
+
+  const cancelGame = () => {
+    setPlaying(false)
+    setScore(0)
   }
 
   const hitMole = () => {
-    console.log(score)
     setScore(score + 50)
   }
 
@@ -62,6 +77,12 @@ function App() {
     return hole;
   }
 
+  const handleNameChange = (event: any) => {
+    const playerName: string = event.target.value
+    if (playerName.length > 3) return
+    setName(playerName.toLocaleUpperCase())
+  }
+
   return (
     <div className="App">
       <Scoreboard />
@@ -69,11 +90,13 @@ function App() {
         {!playing ? (
           <>
             <h1>Whack a Mole Game</h1>
+            <input onChange={handleNameChange} type="text" value={name} />
+
             <button onClick={startGame}>Start</button>
           </>
         ) : (
           <div className='Game'>
-            <button onClick={finishGame}>Finish</button>
+            <button onClick={cancelGame}>Cancel</button>
             <Score score={score} />
             <Timer />
             <Moles onClick={hitMole} />
