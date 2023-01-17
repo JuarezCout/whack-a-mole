@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import './Mole.css'
 
 const Mole = ({ hole, onClick }: { hole: number, onClick: (hole: number) => void }) => {

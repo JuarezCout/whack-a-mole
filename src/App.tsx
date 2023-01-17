@@ -54,7 +54,7 @@ function App() {
     setScore(0)
   }
 
-  const hitMole = (hole: number) => {
+  const whackMole = (hole: number) => {
     holes = document.querySelectorAll('.Mole_hole')
     holes[hole - 1].classList.add('hit')
     setScore(score + 50)
@@ -111,7 +111,7 @@ function App() {
             <button onClick={cancelGame}>Cancel</button>
             <Score score={score} />
             <Timer />
-            <Moles onClick={hitMole} />
+            <Moles onClick={whackMole} />
           </div>
         )}
       </div>
