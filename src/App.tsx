@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import './App.css';
+import Moles from './components/Moles';
+import Score from './components/Score';
+import Timer from './components/Timer';
 import { selectScoreboard } from './redux/gameSlice';
 
 function App() {
@@ -42,12 +45,11 @@ function App() {
             <button onClick={startGame}>Start</button>
           </>
         ) : (
-          <>
-            <div>
-              <h1>Score</h1>
-              <button onClick={finishGame}>Start</button>
-            </div>
-          </>
+          <div className='Game'>
+            <Score />
+            <Timer />
+            <Moles />
+          </div>
         )}
       </div>
 
